@@ -7,7 +7,6 @@ const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
 const client = new vision.ImageAnnotatorClient({
     credentials: credentials 
 });
-
 const app = express();
 const PORT = process.env.PORT || 3000;
 
