@@ -1,16 +1,18 @@
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const vision = require('@google-cloud/vision');
 
+const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
 const client = new vision.ImageAnnotatorClient({
-    keyFilename: './google-credentials.json'
+    credentials: credentials 
 });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(cors());
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: '50mb' }));
 
 app.get('/', (req, res) => {
     res.send('health check');
@@ -36,7 +38,6 @@ app.post('/analyze', async (req, res) => {
         });
     }
 });
-
 
 app.listen(PORT, () => {
     console.log(`server is running ${PORT}!`)
