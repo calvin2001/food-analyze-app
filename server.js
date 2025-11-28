@@ -52,7 +52,7 @@ app.post('/analyze', async (req, res) => {
             success: true,
             // 💡 웹 감지 결과 데이터 반환
             bestGuess: bestGuess,
-            labels: labels
+            webEntities: webEntities
         });
     } catch (error) {
         res.status(500).json({
