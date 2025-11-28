@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const vision = require('@google-cloud/vision');
+const { Translate } = require('@google-cloud/translate').v2;
 
 const base64String = process.env.GCP_CREDENTIALS_BASE64;
 const jsonString = Buffer.from(base64String, 'base64').toString('utf8');
@@ -9,6 +10,9 @@ const jsonString = Buffer.from(base64String, 'base64').toString('utf8');
 const credentials = JSON.parse(jsonString);
 const client = new vision.ImageAnnotatorClient({
     credentials: credentials
+});
+const translateClient = new Translate({
+    credentials: credentials 
 });
 
 const app = express();
@@ -48,10 +52,21 @@ app.post('/analyze', async (req, res) => {
                 }));
         }
 
+        const sourceText = bestGuess;
+
+        let translatedText = sourceText;
+        const targetLanguage = 'ko'; //한국어
+
+        if (sourceText && sourceText !== '정보 없음') {
+            const [translation] = await translateClient.translate(sourceText. targetLanguage);
+            translatedText = translation;
+        }
+
         res.json({
             success: true,
             // 💡 웹 감지 결과 데이터 반환
-            bestGuess: bestGuess,
+            originalLabel: sourceText,
+            koreanLabel: translatedText,
             webEntities: webEntities
         });
     } catch (error) {
