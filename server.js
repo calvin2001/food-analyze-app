@@ -58,7 +58,7 @@ app.post('/analyze', async (req, res) => {
         const targetLanguage = 'ko'; //한국어
 
         if (sourceText && sourceText !== '정보 없음') {
-            const [translation] = await translateClient.translate(sourceText. targetLanguage);
+            const [translation] = await translateClient.translate(sourceText, targetLanguage);
             translatedText = translation;
         }
 
