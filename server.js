@@ -3,10 +3,14 @@ const express = require('express');
 const cors = require('cors');
 const vision = require('@google-cloud/vision');
 
-const credentials = JSON.parse(process.env.GCP_CREDENTIALS);
+const base64String = process.env.GCP_CREDENTIALS_BASE64;
+const jsonString = Buffer.from(base64String, 'base64').toString('utf8');
+
+const credentials = JSON.parse(jsonString);
 const client = new vision.ImageAnnotatorClient({
     credentials: credentials 
 });
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
