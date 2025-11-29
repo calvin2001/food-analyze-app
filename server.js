@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const vision = require('@google-cloud/vision');
 const { Translate } = require('@google-cloud/translate').v2;
+const foodDatabase = require("./foodData");
 
 const base64String = process.env.GCP_CREDENTIALS_BASE64;
 const jsonString = Buffer.from(base64String, 'base64').toString('utf8');
@@ -62,12 +63,20 @@ app.post('/analyze', async (req, res) => {
             translatedText = translation;
         }
 
+        const comparedText = translatedText.replace(/ /g, "");
+        const detectedText = foodDatabase[comparedText];
+
+        if (!detectedText) {
+            console.log("DB에 없는 음식입니다.",comparedText);
+        }
+
         res.json({
             success: true,
             // 💡 웹 감지 결과 데이터 반환
             originalLabel: sourceText,
             koreanLabel: translatedText,
-            webEntities: webEntities
+            webEntities: webEntities,
+            foodInfo: detectedText 
         });
     } catch (error) {
         res.status(500).json({
