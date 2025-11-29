@@ -65,6 +65,7 @@ app.post('/analyze', async (req, res) => {
 
         const comparedText = translatedText.replace(/ /g, "");
         console.log("1. 띄어쓰기 제거", comparedText);
+        console.log("DB 확인:",foodDatabase);
         const keys = Object.keys(foodDatabase);
         console.log("키 배열 확인:", keys);
         let detectedInfo = null;
