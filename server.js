@@ -13,7 +13,7 @@ const client = new vision.ImageAnnotatorClient({
     credentials: credentials
 });
 const translateClient = new Translate({
-    credentials: credentials 
+    credentials: credentials
 });
 
 const app = express();
@@ -64,19 +64,23 @@ app.post('/analyze', async (req, res) => {
         }
 
         const comparedText = translatedText.replace(/ /g, "");
+        console.log("1. 띄어쓰기 제거", comparedText);
         const keys = Object.keys(foodDatabase);
         let detectedInfo = null;
 
         if (foodDatabase[comparedText]) {
             detectedInfo = foodDatabase[comparedText];
+            console.log("2. 음식정보 찾기", detectedInfo);
         } else {
             for (const key of keys) {
                 if (comparedText.includes(key)) {
                     detectedInfo = foodDatabase[key];
+                    console.log("2. 음식정보 찾기", detectedInfo);
                     break;
                 }
             }
         }
+        console.log("3. 최종 음식정보 찾기", detectedInfo);
 
         res.json({
             success: true,
@@ -84,7 +88,7 @@ app.post('/analyze', async (req, res) => {
             originalLabel: sourceText,
             koreanLabel: translatedText,
             webEntities: webEntities,
-            foodInfo: detectedInfo 
+            foodInfo: detectedInfo
         });
     } catch (error) {
         res.status(500).json({
