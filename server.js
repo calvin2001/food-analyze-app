@@ -66,6 +66,7 @@ app.post('/analyze', async (req, res) => {
         const comparedText = translatedText.replace(/ /g, "");
         console.log("1. 띄어쓰기 제거", comparedText);
         const keys = Object.keys(foodDatabase);
+        console.log("키 배열 확인:", keys);
         let detectedInfo = null;
 
         if (foodDatabase[comparedText]) {
@@ -73,6 +74,7 @@ app.post('/analyze', async (req, res) => {
             console.log("2. 음식정보 찾기", detectedInfo);
         } else {
             for (const key of keys) {
+                console.log("배열 반복 확인:", key);
                 if (comparedText.includes(key)) {
                     detectedInfo = foodDatabase[key];
                     console.log("2. 음식정보 찾기", detectedInfo);
