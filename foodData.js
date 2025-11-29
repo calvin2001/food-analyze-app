@@ -26,4 +26,4 @@ const foodDatabase =
     }
 }
 
-module.export = foodDatabase;
+module.exports = foodDatabase;
