@@ -68,7 +68,7 @@ app.post('/analyze', async (req, res) => {
         let detectedInfo = null;
 
         if (foodDatabase[comparedText]) {
-            detectedText = foodDatabase[comparedText];
+            detectedInfo = foodDatabase[comparedText];
         } else {
             for (const key of keys) {
                 if (comparedText.includes(key)) {
