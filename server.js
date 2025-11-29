@@ -64,10 +64,18 @@ app.post('/analyze', async (req, res) => {
         }
 
         const comparedText = translatedText.replace(/ /g, "");
-        const detectedText = foodDatabase[comparedText];
+        const keys = Object.keys(foodDatabase);
+        let detectedInfo = null;
 
-        if (!detectedText) {
-            console.log("DB에 없는 음식입니다.",comparedText);
+        if (foodDatabase[comparedText]) {
+            detectedText = foodDatabase[comparedText];
+        } else {
+            for (const key of keys) {
+                if (comparedText.includes(key)) {
+                    detectedInfo = foodDatabase[key];
+                    break;
+                }
+            }
         }
 
         res.json({
@@ -76,7 +84,7 @@ app.post('/analyze', async (req, res) => {
             originalLabel: sourceText,
             koreanLabel: translatedText,
             webEntities: webEntities,
-            foodInfo: detectedText 
+            foodInfo: detectedInfo 
         });
     } catch (error) {
         res.status(500).json({
