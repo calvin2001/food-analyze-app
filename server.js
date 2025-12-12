@@ -65,7 +65,7 @@ app.post('/analyze', async (req, res) => {
 
         const comparedText = translatedText.replace(/ /g, "");
         console.log("1. 띄어쓰기 제거", comparedText);
-        console.log("DB 확인:",foodDatabase);
+        console.log("DB 확인:", foodDatabase);
         const keys = Object.keys(foodDatabase);
         console.log("키 배열 확인:", keys);
         let detectedInfo = null;
@@ -84,15 +84,32 @@ app.post('/analyze', async (req, res) => {
             }
         }
         console.log("3. 최종 음식정보 찾기", detectedInfo);
+        if (detectedInfo) {
+            let suitability = '보통';
+            if (detectedInfo.suitableFor.includes(bodyType)) {
+                suitability = '적합';
+            } else {
+                suitability = '부적합';
+            }
+            res.json({
+                success: true,
+                // 💡 웹 감지 결과 데이터 반환
+                originalLabel: sourceText,
+                koreanLabel: translatedText,
+                webEntities: webEntities,
+                foodInfo: detectedInfo,
+                suitability: suitability
+            });
+        } else {
+            res.json({
+                success: true,
+                koreanLabel: translatedText,
+                webEntities: webEntities,
+                foodInfo: null,
+                message: "알 수 없는 음식입니다"
+            });
+        }
 
-        res.json({
-            success: true,
-            // 💡 웹 감지 결과 데이터 반환
-            originalLabel: sourceText,
-            koreanLabel: translatedText,
-            webEntities: webEntities,
-            foodInfo: detectedInfo
-        });
     } catch (error) {
         res.status(500).json({
             success: false,
