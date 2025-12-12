@@ -6,10 +6,16 @@ const foodDatabase =
         notSuitable: ["태양인"],
         description: "다양한 나물과 고추장을 비벼 먹는 음식"
     },
+    "계란프라이": {
+        calories: 550,
+        suitableFor: ["소양인", "태양인"],
+        notSuitable: ["태음인"],
+        description: "다양한 나물과 고추장을 비벼 먹는 음식"
+    },
     "김치": {
         calories: 50,
         suitableFor: ["소양인", "태음인"],
-        notSuitable: ["태양인"],
+        notSuitable: ["소음인"],
         description: "다양한 나물과 고추장을 비벼 먹는 음식"
     },
     "쌀": {
